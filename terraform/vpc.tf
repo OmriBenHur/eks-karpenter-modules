@@ -5,7 +5,7 @@ module "vpc" {
   name = var.vpc-name
   cidr = var.vpc-cidr
 
-  azs = [local.azs]
+  azs = [for o in local.azs : tostring(o)]
   public_subnets = [for k, v in module.vpc.azs : cidrsubnet(var.vpc-cidr, 6, k)]
   private_subnets  = [for k, v in module.vpc.azs  : cidrsubnet(var.vpc-cidr, 6, k + 2)]
 
