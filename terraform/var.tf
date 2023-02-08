@@ -72,5 +72,5 @@ variable "spot-instance-types" {
   default = ["t2.small"]
 }
  locals {
-   azs = slice(data.aws_availability_zones.available_zones.names,0,var.az-amount + 1)
+   azs = slice(data.aws_availability_zones.available_zones.names,0,var.az-amount)
  }
