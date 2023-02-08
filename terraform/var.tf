@@ -64,7 +64,7 @@ variable "spot-node-group-role-tag" {
   default = "spot"
 }
 variable "subnet-bits" {
-  default = "8"
+  default = 4
 }
 
 variable "spot-instance-types" {
