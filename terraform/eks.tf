@@ -12,6 +12,7 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
 
   enable_irsa = true
+  manage_aws_auth_configmap = true
   aws_auth_roles = [
     {
       rolearn = module.eks_admins_iam_role.iam_role_arn
