@@ -12,6 +12,13 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
 
   enable_irsa = true
+  aws_auth_roles = [
+    {
+      rolearn = module.eks_admins_iam_role.iam_role_arn
+      username = module.eks_admins_iam_role.iam_role_name
+      groups = ["system:masters"]
+    }
+  ]
 
   eks_managed_node_group_defaults = {
     disk_size = var.managed-node-group-disk-size
