@@ -63,6 +63,9 @@ variable "spot-node-group-max" {
 variable "spot-node-group-role-tag" {
   default = "spot"
 }
+variable "subnet-bits" {
+  default = "8"
+}
 
 variable "spot-instance-types" {
   type = list(any)
