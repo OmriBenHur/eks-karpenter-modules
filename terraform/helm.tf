@@ -10,7 +10,7 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "settings.aws.clusterName"
-#    value = var.cluster-name
+    value = var.cluster-name
   }
 
   set {
