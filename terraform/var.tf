@@ -45,7 +45,7 @@ variable "node-group-role-tag" {
 
 variable "general-instance-types" {
   type = list(any)
-  default = ["t2.small"]
+  default = ["t2.medium"]
 }
 
 variable "spot-node-group-des" {
