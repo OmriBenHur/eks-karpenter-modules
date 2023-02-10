@@ -28,11 +28,11 @@ variable "managed-node-group-disk-size" {
 }
 
 variable "node-group-des" {
-  default = 1
+  default = 2
 }
 
 variable "node-group-min" {
-  default = 0
+  default = 2
 }
 
 variable "node-group-max" {
@@ -74,3 +74,15 @@ variable "spot-instance-types" {
  locals {
    azs = slice(data.aws_availability_zones.available_zones.names,0,var.az-amount)
  }
+
+variable "karpenter-repo" {
+  default = "https://charts.karpenter.sh/"
+}
+
+variable "karpenter-chart" {
+  default = "karpenter"
+}
+
+variable "karpenter-chart-version" {
+  default = "v0.13.1"
+}

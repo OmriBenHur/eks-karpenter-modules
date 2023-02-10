@@ -12,14 +12,31 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
 
   enable_irsa = true
-  manage_aws_auth_configmap = true
-  aws_auth_roles = [
-    {
-      rolearn = module.eks_admins_iam_role.iam_role_arn
-      username = module.eks_admins_iam_role.iam_role_name
-      groups = ["system:masters"]
+#  manage_aws_auth_configmap = true
+
+  node_security_group_additional_rules = {
+    ingress_nodes_karpenter_port = {
+      description                   = "Cluster API to Node group for Karpenter webhook"
+      protocol                      = "tcp"
+      from_port                     = 8443
+      to_port                       = 8443
+      type                          = "ingress"
+      source_cluster_security_group = true
     }
-  ]
+  }
+
+#  aws_auth_roles = [
+#    {
+#      rolearn = module.eks_admins_iam_role.iam_role_arn
+#      username = module.eks_admins_iam_role.iam_role_name
+#      groups = ["system:masters"]
+#    },
+#    {
+#      rolearn = module.karpenter_iam_role.iam_role_arn
+#      username = module.karpenter_iam_role.iam_role_name
+#      groups = ["system:masters"]
+#    }
+#  ]
 
   eks_managed_node_group_defaults = {
     disk_size = var.managed-node-group-disk-size
@@ -27,6 +44,8 @@ module "eks" {
 
   eks_managed_node_groups = {
     general = {
+      create_security_group = false
+
       desired_size = var.node-group-des
       min_size = var.node-group-min
       max_size = var.node-group-max
