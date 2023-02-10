@@ -15,7 +15,7 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "settings.aws.clusterEndpoint"
-    value = module.eks.cluster_endpoint
+    value = data.aws_eks_cluster.cluster.endpoint
   }
 
   set {
