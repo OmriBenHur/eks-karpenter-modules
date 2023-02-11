@@ -30,6 +30,13 @@ provider "aws" {
   region = var.aws-region
 }
 
+provider "aws" {
+  # for ecr token.
+  region = "us-east-1"
+  alias = "virginia"
+}
+
+
 data "aws_eks_cluster_auth" "cluster-auth" {
   name       = module.eks.cluster_id
 }
@@ -40,17 +47,9 @@ data "aws_eks_cluster" "cluster" {
 
 data "aws_partition" "current" {}
 
-data "aws_ecrpublic_authorization_token" "token" {}
-
-
-#provider "aws" {
-#  region = "us-east-1"
-#  alias = "virginia"
-#}
-#
-#data "aws_ecrpublic_authorization_token" "token" {
-#  provider = aws.virginia
-#}
+data "aws_ecrpublic_authorization_token" "token" {
+  provider = aws.virginia
+}
 
 provider "helm" {
   kubernetes {
