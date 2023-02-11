@@ -23,6 +23,10 @@ variable "cluster-name" {
   default = "moduled-eks"
 }
 
+variable "cluster-version" {
+  default = "1.24"
+}
+
 variable "managed-node-group-disk-size" {
   default = 30
 }
@@ -43,7 +47,7 @@ variable "node-group-role-tag" {
   default = "general"
 }
 
-variable "general-instance-types" {
+variable "karpenter-instance-types" {
   type = list(any)
   default = ["t2.medium"]
 }
@@ -71,12 +75,9 @@ variable "spot-instance-types" {
   type = list(any)
   default = ["t2.small"]
 }
- locals {
-   azs = slice(data.aws_availability_zones.available_zones.names,0,var.az-amount)
- }
 
 variable "karpenter-repo" {
-  default = "https://charts.karpenter.sh/"
+  default = "oci://public.ecr.aws/karpenter"
 }
 
 variable "karpenter-chart" {
@@ -84,5 +85,5 @@ variable "karpenter-chart" {
 }
 
 variable "karpenter-chart-version" {
-  default = "v0.13.1"
+  default = "v0.20.0"
 }

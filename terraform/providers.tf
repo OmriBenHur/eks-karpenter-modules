@@ -18,12 +18,16 @@ terraform {
       source = "hashicorp/helm"
       version = ">= 2.6.0"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
   }
 }
 
 # provider conf. enter the region you're operating in
 provider "aws" {
-  region = "us-west-2"
+  region = var.aws-region
 }
 
 data "aws_eks_cluster_auth" "cluster-auth" {
@@ -34,6 +38,20 @@ data "aws_eks_cluster" "cluster" {
   name       = module.eks.cluster_id
 }
 
+data "aws_partition" "current" {}
+
+data "aws_ecrpublic_authorization_token" "token" {}
+
+
+#provider "aws" {
+#  region = "us-east-1"
+#  alias = "virginia"
+#}
+#
+#data "aws_ecrpublic_authorization_token" "token" {
+#  provider = aws.virginia
+#}
+
 provider "helm" {
   kubernetes {
     host                   = data.aws_eks_cluster.cluster.endpoint
@@ -41,3 +59,9 @@ provider "helm" {
     token = data.aws_eks_cluster_auth.cluster-auth.token
   }
 }
+
+ locals {
+   azs = slice(data.aws_availability_zones.available_zones.names,0,var.az-amount)
+   partition = data.aws_partition.current.partition
+
+ }

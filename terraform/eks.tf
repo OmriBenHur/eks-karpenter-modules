@@ -1,18 +1,15 @@
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
-  version = "18.29.0"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "19.7.0"
 
-  cluster_name = var.cluster-name
-  cluster_version = "1.23"
+  cluster_name    = var.cluster-name
+  cluster_version = var.cluster-version
 
-  cluster_endpoint_private_access = true
-  cluster_endpoint_public_access = true
-
-  vpc_id = module.vpc.vpc_id
+  vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
+  # Required for Karpenter role below
   enable_irsa = true
-#  manage_aws_auth_configmap = true
 
   node_security_group_additional_rules = {
     ingress_nodes_karpenter_port = {
@@ -25,50 +22,26 @@ module "eks" {
     }
   }
 
-#  aws_auth_roles = [
-#    {
-#      rolearn = module.eks_admins_iam_role.iam_role_arn
-#      username = module.eks_admins_iam_role.iam_role_name
-#      groups = ["system:masters"]
-#    },
-#    {
-#      rolearn = module.karpenter_iam_role.iam_role_arn
-#      username = module.karpenter_iam_role.iam_role_name
-#      groups = ["system:masters"]
-#    }
-#  ]
-
-  eks_managed_node_group_defaults = {
-    disk_size = var.managed-node-group-disk-size
+  node_security_group_tags = {
+    # NOTE - if creating multiple security groups with this module, only tag the
+    # security group that Karpenter should utilize with the following tag
+    # (i.e. - at most, only one security group should have this tag in your account)
+    "karpenter.sh/discovery" = var.cluster-name
   }
 
+  # Only need one node to get Karpenter up and running.
+  # This ensures core services such as VPC CNI, CoreDNS, etc. are up and running
+  # so that Karpenter can be deployed and start managing compute capacity as required
   eks_managed_node_groups = {
-    general = {
+    initial = {
+      instance_types = var.karpenter-instance-types
+      # Not required nor used - avoid tagging two security groups with same tag as well
       create_security_group = false
 
+      # Ensure enough capacity to run 2 Karpenter pods
+      min_size     = var.node-group-min
+      max_size     = var.node-group-max
       desired_size = var.node-group-des
-      min_size = var.node-group-min
-      max_size = var.node-group-max
-
-      labels = {
-        role = var.node-group-role-tag
-      }
-
-      instance_types = var.general-instance-types
-      capacity_type = "ON_DEMAND"
-    }
-
-    spot = {
-      desired_size = var.spot-node-group-des
-      min_size = var.spot-node-group-min
-      max_size = var.spot-node-group-max
-
-      labels = {
-        role = var.spot-node-group-role-tag
-      }
-
-      instance_types = var.spot-instance-types
-      capacity_type = "SPOT"
     }
   }
 }
