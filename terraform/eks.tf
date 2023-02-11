@@ -11,17 +11,6 @@ module "eks" {
   # Required for Karpenter role below
   enable_irsa = true
 
-  node_security_group_additional_rules = {
-    ingress_nodes_karpenter_port = {
-      description                   = "Cluster API to Node group for Karpenter webhook"
-      protocol                      = "tcp"
-      from_port                     = 8443
-      to_port                       = 8443
-      type                          = "ingress"
-      source_cluster_security_group = true
-    }
-  }
-
   node_security_group_tags = {
     # NOTE - if creating multiple security groups with this module, only tag the
     # security group that Karpenter should utilize with the following tag
