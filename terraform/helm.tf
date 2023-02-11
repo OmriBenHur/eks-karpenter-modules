@@ -1,4 +1,3 @@
-
 resource "helm_release" "karpenter" {
   namespace        = "karpenter"
   create_namespace = true
@@ -10,7 +9,7 @@ resource "helm_release" "karpenter" {
 
   set {
     name  = "settings.aws.clusterName"
-    value = var.cluster-name
+    value = data.aws_eks_cluster.cluster.name
   }
 
   set {
