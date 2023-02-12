@@ -10,7 +10,7 @@ resource "kubectl_manifest" "karpenter_provisioner" {
           operator: In
           values: ${var.karpenter-capacity-type}
         - key: node.kubernetes.io/instance-type
-          operatorL In
+          operator: In
           values: ${var.karpenter-instance-type}
       limits:
         resources:
