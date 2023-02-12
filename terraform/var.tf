@@ -75,7 +75,7 @@ variable "karpenter-chart-version" {
 }
 
 variable "karpenter-capacity-type" {
-  default = '["spot", "on-demand"]'
+  default = "[\"spot\", \"on-demand\"]"
 }
 
 variable "karpenter-cpu-limit" {
@@ -87,7 +87,7 @@ variable "karpenter-ttl-empty" {
 }
 
 variable "karpenter-instance-category" {
-  default = '["t"]'
+  default = "[\"t\"]"
 }
 
 variable "karpenter-ttl-expired" {
