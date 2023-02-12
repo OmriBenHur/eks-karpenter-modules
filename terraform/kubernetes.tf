@@ -5,15 +5,15 @@ resource "kubectl_manifest" "karpenter_provisioner" {
     metadata:
       name: default
     spec:
-     requirements:
-      - key: node.kubernetes.io/instance-type
+      requirements:
+        - key: karpenter.sh/capacity-type
         operator: In
-        values: ${var.karpenter-capacity-type}
+        values: ["spot"]
       limits:
         resources:
           cpu: ${var.karpenter-cpu-limit}
-      providerRef:
-        name: default
+        providerRef:
+          name: default
       ttlSecondsAfterEmpty: ${var.karpenter-ttl-empty}
       ttlSecondsUntilExpired: ${var.karpenter-ttl-expired}
   YAML
