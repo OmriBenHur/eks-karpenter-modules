@@ -45,10 +45,7 @@ resource "kubectl_manifest" "karpenter_node_template" {
   depends_on = [kubectl_manifest.karpenter_provisioner]
 }
 
-
-
-
-resource "kubectl_manifest" "karpenter_node_template" {
+resource "kubectl_manifest" "karpenter_example_deployment" {
   yaml_body = <<-YAML
     apiVersion: apps/v1
     kind: Deployment
