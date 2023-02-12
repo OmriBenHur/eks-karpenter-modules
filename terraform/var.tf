@@ -101,7 +101,7 @@ variable "karpenter-instance-size-avoid" {
 }
 
 variable "karpenter-instance-size" {
-  type    = list(any)
+  type    = list(string)
   default = ["xlarge", "2xlarge", "large", "medium", "nano"]
 }
 
