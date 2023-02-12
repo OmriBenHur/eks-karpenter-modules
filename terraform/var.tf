@@ -75,7 +75,7 @@ variable "karpenter-chart-version" {
 }
 
 variable "karpenter-capacity-type" {
-  default = "SPOT"
+  default = '["spot", "on-demand"]'
 }
 
 variable "karpenter-cpu-limit" {
@@ -86,8 +86,8 @@ variable "karpenter-ttl-empty" {
   default = 30
 }
 
-variable "karpenter-instance-family" {
-  default = "[t2, t3]"
+variable "karpenter-instance-category" {
+  default = '["t"]'
 }
 
 variable "karpenter-ttl-expired" {
@@ -95,9 +95,8 @@ variable "karpenter-ttl-expired" {
   default = 86400
 }
 
-variable "karpenter-instance-size-avoid" {
-  type    = string
-  default = "[xlarge, 2xlarge, large, medium, nano]"
+variable "karpenter-instance-generation" {
+  default = 2
 }
 
 variable "karpenter-subnet-tag" {

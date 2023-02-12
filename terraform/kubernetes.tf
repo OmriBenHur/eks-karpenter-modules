@@ -6,15 +6,15 @@ resource "kubectl_manifest" "karpenter_provisioner" {
       name: default
     spec:
       requirements:
-        - key: karpenter.sh/capacity-type
+        - key: node.kubernetes.io/instance-type
           operator: In
-          values: [${var.karpenter-capacity-type}]
-        - key: karpenter.k8s.aws/instance-family
+          values: ${var.karpenter-capacity-type}
+        - key: karpenter.k8s.aws/instance-category
           operator: In
-          values: ${var.karpenter-instance-family}
-        - key: karpenter.k8s.aws/instance-size
-          operator: NotIn
-          values: ${var.karpenter-instance-size-avoid}
+          values: ${var.karpenter-instance-category}
+        - key: karpenter.k8s.aws/instance-generation
+          operator: Gt
+          values: ${var.karpenter-instance-generation}
       limits:
         resources:
           cpu: ${var.karpenter-cpu-limit}
