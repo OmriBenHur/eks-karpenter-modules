@@ -75,7 +75,7 @@ variable "karpenter-chart-version" {
 }
 
 variable "karpenter-capacity-type" {
-  default = "spot"
+  default = "SPOT"
 }
 
 variable "karpenter-cpu-limit" {
@@ -87,7 +87,7 @@ variable "karpenter-ttl-empty" {
 }
 
 variable "karpenter-instance-family" {
-  default = "t2"
+  default = "[t2, t3]"
 }
 
 variable "karpenter-ttl-expired" {
@@ -97,7 +97,7 @@ variable "karpenter-ttl-expired" {
 
 variable "karpenter-instance-size-avoid" {
   type    = string
-  default = "xlarge, 2xlarge, large, medium, nano"
+  default = "[xlarge, 2xlarge, large, medium, nano]"
 }
 
 variable "karpenter-subnet-tag" {

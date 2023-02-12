@@ -11,10 +11,10 @@ resource "kubectl_manifest" "karpenter_provisioner" {
           values: [${var.karpenter-capacity-type}]
         - key: karpenter.k8s.aws/instance-family
           operator: In
-          values: [${var.karpenter-instance-family}]
+          values: ${var.karpenter-instance-family}
         - key: karpenter.k8s.aws/instance-size
           operator: NotIn
-          values: [${var.karpenter-instance-size-avoid}]
+          values: ${var.karpenter-instance-size-avoid}
       limits:
         resources:
           cpu: ${var.karpenter-cpu-limit}
