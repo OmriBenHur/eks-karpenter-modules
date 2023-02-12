@@ -11,11 +11,11 @@ terraform {
 
   required_providers {
     kubectl = {
-      source = "gavinbunney/kubectl"
+      source  = "gavinbunney/kubectl"
       version = ">= 1.14.0"
     }
     helm = {
-      source = "hashicorp/helm"
+      source  = "hashicorp/helm"
       version = ">= 2.6.0"
     }
     aws = {
@@ -23,6 +23,20 @@ terraform {
       version = "~> 4.0"
     }
   }
+}
+
+data "aws_eks_cluster_auth" "cluster-auth" {
+  name = var.cluster-name
+}
+
+data "aws_eks_cluster" "cluster" {
+  name = var.cluster-name
+}
+
+data "aws_partition" "current" {}
+
+data "aws_ecrpublic_authorization_token" "token" {
+  provider = aws.virginia
 }
 
 # provider conf. enter the region you're operating in
@@ -33,34 +47,27 @@ provider "aws" {
 provider "aws" {
   # for ecr token.
   region = "us-east-1"
-  alias = "virginia"
-}
-
-
-data "aws_eks_cluster_auth" "cluster-auth" {
-  name       = var.cluster-name
-}
-
-data "aws_eks_cluster" "cluster" {
-  name       = var.cluster-name
-}
-
-data "aws_partition" "current" {}
-
-data "aws_ecrpublic_authorization_token" "token" {
-  provider = aws.virginia
+  alias  = "virginia"
 }
 
 provider "helm" {
   kubernetes {
     host                   = data.aws_eks_cluster.cluster.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
-    token = data.aws_eks_cluster_auth.cluster-auth.token
+    token                  = data.aws_eks_cluster_auth.cluster-auth.token
   }
 }
 
- locals {
-   azs = slice(data.aws_availability_zones.available_zones.names,0,var.az-amount)
-   partition = data.aws_partition.current.partition
+provider "kubectl" {
+  host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.cluster-auth.token
+  load_config_file       = false
+}
 
- }
+locals {
+  azs       = slice(data.aws_availability_zones.available_zones.names, 0, var.az-amount)
+  partition = data.aws_partition.current.partition
+
+}
+

@@ -5,13 +5,13 @@ module "vpc" {
   name = var.vpc-name
   cidr = var.vpc-cidr
 
-  azs = [for o in local.azs : tostring(o)]
-  public_subnets = [for k, v in module.vpc.azs : cidrsubnet(var.vpc-cidr, var.subnet-bits, k)]
-  private_subnets  = [for k, v in module.vpc.azs  : cidrsubnet(var.vpc-cidr, var.subnet-bits, k + var.az-amount)]
+  azs             = [for o in local.azs : tostring(o)]
+  public_subnets  = [for k, v in module.vpc.azs : cidrsubnet(var.vpc-cidr, var.subnet-bits, k)]
+  private_subnets = [for k, v in module.vpc.azs : cidrsubnet(var.vpc-cidr, var.subnet-bits, k + var.az-amount)]
 
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
+  enable_nat_gateway     = true
+  single_nat_gateway     = true
+  enable_dns_hostnames   = true
   one_nat_gateway_per_az = false
 
 

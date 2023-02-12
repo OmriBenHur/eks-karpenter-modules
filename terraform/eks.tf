@@ -5,7 +5,7 @@ module "eks" {
   cluster_name    = var.cluster-name
   cluster_version = var.cluster-version
 
-  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
 
   vpc_id     = module.vpc.vpc_id
@@ -26,7 +26,7 @@ module "eks" {
   # so that Karpenter can be deployed and start managing compute capacity as required
   eks_managed_node_groups = {
     initial = {
-      instance_types = var.karpenter-instance-types
+      instance_types = var.initial-instance-types
       # Not required nor used - avoid tagging two security groups with same tag as well
       create_security_group = false
 

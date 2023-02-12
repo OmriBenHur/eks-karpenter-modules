@@ -8,7 +8,7 @@ variable "vpc-name" {
 
 variable "aws-region" {
   description = "region for aws"
-  default = "us-west-2"
+  default     = "us-west-2"
 }
 
 data "aws_availability_zones" "available_zones" {
@@ -47,21 +47,9 @@ variable "node-group-role-tag" {
   default = "general"
 }
 
-variable "karpenter-instance-types" {
-  type = list(any)
+variable "initial-instance-types" {
+  type    = list(any)
   default = ["t2.medium"]
-}
-
-variable "spot-node-group-des" {
-  default = 1
-}
-
-variable "spot-node-group-min" {
-  default = 0
-}
-
-variable "spot-node-group-max" {
-  default = 4
 }
 
 variable "spot-node-group-role-tag" {
@@ -71,11 +59,9 @@ variable "subnet-bits" {
   default = 4
 }
 
-variable "spot-instance-types" {
-  type = list(any)
-  default = ["t2.small"]
-}
-
+#################################################################################
+# KARPENTER CONFIGURATION
+#################################################################################
 variable "karpenter-repo" {
   default = "oci://public.ecr.aws/karpenter"
 }
@@ -86,4 +72,39 @@ variable "karpenter-chart" {
 
 variable "karpenter-chart-version" {
   default = "v0.20.0"
+}
+
+variable "karpenter-capacity-type" {
+  default = "spot"
+}
+
+variable "karpenter-cpu-limit" {
+  default = 100
+}
+
+variable "karpenter-ttl-empty" {
+  default = 30
+}
+
+variable "karpenter-instance-family" {
+  default = "t2"
+}
+
+variable "karpenter-ttl-expired" {
+  # in seconds, this is 1 day. 60 * 60 * 24 = 86400
+  default = 86400
+}
+
+variable "karpenter-instance-size-avoid" {
+  type    = list(any)
+  default = ["xlarge", "2xlarge", "large"]
+}
+
+variable "karpenter-instance-size" {
+  type    = list(any)
+  default = ["xlarge", "2xlarge", "large", "medium", "nano"]
+}
+
+variable "karpenter-subnet-tag" {
+  default = "karpenter.sh/discovery"
 }
