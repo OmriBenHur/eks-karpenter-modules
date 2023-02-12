@@ -96,8 +96,8 @@ variable "karpenter-ttl-expired" {
 }
 
 variable "karpenter-instance-size-avoid" {
-  type    = list(any)
-  default = ["xlarge", "2xlarge", "large", "medium", "nano"]
+  type    = string
+  default = "xlarge, 2xlarge, large, medium, nano"
 }
 
 variable "karpenter-subnet-tag" {
