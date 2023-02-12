@@ -9,12 +9,9 @@ resource "kubectl_manifest" "karpenter_provisioner" {
         - key: karpenter.sh/capacity-type
           operator: In
           values: ${var.karpenter-capacity-type}
-        - key: karpenter.k8s.aws/instance-category
-          operator: In
-          values: ${var.karpenter-instance-category}
-        - key: karpenter.k8s.aws/instance-generation
-          operator: Gt
-          values: ${var.karpenter-instance-generation}
+        - key: node.kubernetes.io/instance-type
+          operatorL In
+          values: ${var.karpenter-instance-type}
       limits:
         resources:
           cpu: ${var.karpenter-cpu-limit}

@@ -95,6 +95,10 @@ variable "karpenter-ttl-expired" {
   default = 86400
 }
 
+variable "karpenter-instance-type" {
+  default = "[\"t2.micro\",\"t2.small\",\"t2.medium\"]"
+}
+
 variable "karpenter-instance-generation" {
   default = "[\"2\"]"
 }
