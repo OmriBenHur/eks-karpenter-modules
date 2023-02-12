@@ -96,7 +96,7 @@ variable "karpenter-ttl-expired" {
 }
 
 variable "karpenter-instance-generation" {
-  default = 2
+  default = "[\"2\"]"
 }
 
 variable "karpenter-subnet-tag" {
