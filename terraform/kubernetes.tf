@@ -8,13 +8,13 @@ resource "kubectl_manifest" "karpenter_provisioner" {
       requirements:
         - key: karpenter.sh/capacity-type
           operator: In
-          values: ["spot"]
+          values: ${var.karpenter-capacity-type}
       limits:
         resources:
-          cpu: 1000
+          cpu: ${var.karpenter-cpu-limit}
       providerRef:
         name: default
-      ttlSecondsAfterEmpty: 30
+      ttlSecondsAfterEmpty: ${var.karpenter-ttl-empty}
   YAML
 
   depends_on = [helm_release.karpenter]
