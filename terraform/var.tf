@@ -97,11 +97,6 @@ variable "karpenter-ttl-expired" {
 
 variable "karpenter-instance-size-avoid" {
   type    = list(any)
-  default = ["xlarge", "2xlarge", "large"]
-}
-
-variable "karpenter-instance-size" {
-  type    = list(string)
   default = ["xlarge", "2xlarge", "large", "medium", "nano"]
 }
 
