@@ -1,3 +1,7 @@
+#################################################################################
+# VPC CONFIGURATION
+#################################################################################
+
 variable "vpc-cidr" {
   default = "10.0.0.0/16"
 }
@@ -18,6 +22,10 @@ data "aws_availability_zones" "available_zones" {
 variable "az-amount" {
   default = "2"
 }
+
+#################################################################################
+# CLUSTER CONFIGURATION
+#################################################################################
 
 variable "cluster-name" {
   default = "moduled-eks"
@@ -62,6 +70,7 @@ variable "subnet-bits" {
 #################################################################################
 # KARPENTER CONFIGURATION
 #################################################################################
+
 variable "karpenter-repo" {
   default = "oci://public.ecr.aws/karpenter"
 }
@@ -75,10 +84,12 @@ variable "karpenter-chart-version" {
 }
 
 variable "karpenter-capacity-type" {
+  # add item like this: , \"EXAMPLE\" within the brackets.
   default = "[\"spot\", \"on-demand\"]"
 }
 
 variable "karpenter-cpu-limit" {
+  # in CPU cores.
   default = 100
 }
 
@@ -87,6 +98,7 @@ variable "karpenter-ttl-empty" {
 }
 
 variable "karpenter-instance-category" {
+  # add item like this: , \"EXAMPLE\" within the brackets.
   default = "[\"t\"]"
 }
 
@@ -96,10 +108,12 @@ variable "karpenter-ttl-expired" {
 }
 
 variable "karpenter-instance-type" {
+  # add item like this: , \"EXAMPLE\" within the brackets.
   default = "[\"t2.micro\",\"t2.small\",\"t2.medium\"]"
 }
 
 variable "karpenter-instance-generation" {
+  # add item like this: , \"EXAMPLE\" within the brackets.
   default = "[\"2\"]"
 }
 

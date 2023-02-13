@@ -25,18 +25,17 @@ terraform {
   }
 }
 
+data "aws_partition" "current" {}
+
 data "aws_eks_cluster_auth" "cluster-auth" {
-  name = var.cluster-name
+  name       = var.cluster-name
   depends_on = [module.eks]
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = var.cluster-name
+  name       = var.cluster-name
   depends_on = [module.eks]
-
 }
-
-data "aws_partition" "current" {}
 
 data "aws_ecrpublic_authorization_token" "token" {
   provider = aws.virginia

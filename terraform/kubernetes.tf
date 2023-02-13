@@ -18,6 +18,7 @@ resource "kubectl_manifest" "karpenter_provisioner" {
       providerRef:
         name: default
       ttlSecondsAfterEmpty: ${var.karpenter-ttl-empty}
+      ttlsSecondsUntilExpired: ${var.karpenter-ttl-expired}
   YAML
 
   depends_on = [helm_release.karpenter]
